@@ -1,8 +1,13 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
+import GitHubProvider from "next-auth/providers/github";
+import TwitterProvider from "next-auth/providers/twitter";
 
 import { db } from "@/server/db";
+
+// Ensure db is initialized
+console.log("Database connection status:", !!db);
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -32,16 +37,15 @@ declare module "next-auth" {
  */
 export const authConfig = {
   providers: [
-    DiscordProvider,
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
+    GitHubProvider({
+      clientId: process.env.AUTH_GITHUB_ID,
+      clientSecret: process.env.AUTH_GITHUB_SECRET,
+    }),
+    // Remove Twitter provider temporarily until we diagnose the issue
+    // TwitterProvider({
+    //   clientId: process.env.AUTH_TWITTER_ID,
+    //   clientSecret: process.env.AUTH_TWITTER_SECRET,
+    // }),
   ],
   adapter: PrismaAdapter(db),
   callbacks: {
@@ -52,5 +56,51 @@ export const authConfig = {
         id: user.id,
       },
     }),
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    signIn: async ({ user, account, profile }) => {
+      if (!user.email) return true;
+      
+      try {
+        // Update or create user with provider specific data
+        await db.user.upsert({
+          where: { id: user.id },
+          update: {
+            emailAddress: user.email,
+            name: user.name,
+            imageUrl: user.image,
+            ...(account?.provider === 'github' && {
+              githubId: profile?.id?.toString(),
+              githubToken: account?.access_token,
+              githubRefreshToken: account?.refresh_token,
+            }),
+          },
+          create: {
+            id: user.id,
+            emailAddress: user.email,
+            name: user.name,
+            imageUrl: user.image,
+            ...(account?.provider === 'github' && {
+              githubId: profile?.id?.toString(),
+              githubToken: account?.access_token,
+              githubRefreshToken: account?.refresh_token,
+            }),
+          },
+        });
+        return true;
+      } catch (error) {
+        console.error("Error saving user data:", error);
+        return true; // Still allow sign in even if saving extra data fails
+      }
+    },
   },
+  pages: {
+    signIn: "/auth/signin",
+    error: "/auth/error",
+  },
+  debug: process.env.NODE_ENV === "development",
 } satisfies NextAuthConfig;
