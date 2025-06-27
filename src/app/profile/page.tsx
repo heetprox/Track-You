@@ -6,6 +6,7 @@ import { FaTwitter, FaGithub, FaUser, FaEdit, FaSave, FaTimes, FaImage } from "r
 
 import { api } from "@/trpc/react";
 import Image from "next/image";
+import LinkGitHubButton from "@/app/_components/link-github-button";
 
 // Type for user data
 type UserData = {
@@ -17,6 +18,7 @@ type UserData = {
   emailAddress?: string | null;
   imageUrl?: string | null;
   githubId?: string | null;
+  githubUsername?: string | null;
   twitterId?: string | null;
   credits: number;
   createdAt: Date;
@@ -127,8 +129,20 @@ export default function ProfilePage() {
   }
 
   // Determine user's social account type
-  const hasTwitter = !!user.email?.includes("twitter") || user.image?.includes("twimg");
+  const hasTwitter = !!user.email?.includes("twitter") || user.image?.includes("twimg") || !!user.twitterId;
   const hasGithub = !!user.githubId;
+
+  // Debug - log user data
+  console.log("User data:", {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    image: user.image,
+    twitterId: user.twitterId,
+    githubId: user.githubId,
+    githubUsername: (user as any).githubUsername,
+    imageUrl: user.imageUrl
+  });
   
   // Get Twitter username (based on standard patterns in Twitter emails)
   const getTwitterUsername = () => {
@@ -233,29 +247,34 @@ export default function ProfilePage() {
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
                   <h2 className="text-3xl font-bold mb-1">{user.name}</h2>
-                  <p className="text-white/70">{user.emailAddress || user.email}</p>
+                  <p className="text-white/70 mb-4">{user.emailAddress || user.email}</p>
                   
-                  {hasTwitter && twitterUsername && (
-                    <a 
-                      href={`https://twitter.com/${twitterUsername}`} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 mt-3 text-blue-400 hover:text-blue-300 transition"
-                    >
-                      <FaTwitter className="text-[#1DA1F2]" /> @{twitterUsername}
-                    </a>
-                  )}
-                  
-                  {hasGithub && (
-                    <a 
-                      href={`https://github.com/${user.githubId}`} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 mt-2 text-gray-300 hover:text-white transition"
-                    >
-                      <FaGithub /> GitHub Profile
-                    </a>
-                  )}
+                  {/* Social Links */}
+                  <div className="flex flex-wrap justify-center gap-3 mt-2">
+                    {hasTwitter && twitterUsername && (
+                      <a 
+                        href={`https://twitter.com/${twitterUsername}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-1.5 bg-[#1DA1F2]/20 hover:bg-[#1DA1F2]/30 rounded-full transition"
+                      >
+                        <FaTwitter className="text-[#1DA1F2]" /> 
+                        <span className="text-blue-200">@{twitterUsername}</span>
+                      </a>
+                    )}
+                    
+                    {hasGithub && (
+                      <a 
+                        href={(user as any).githubUsername ? `https://github.com/${(user as any).githubUsername}` : user.githubId ? `https://github.com/id/${user.githubId}` : "https://github.com"} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-1.5 bg-gray-700/30 hover:bg-gray-700/50 rounded-full transition"
+                      >
+                        <FaGithub className="text-white" /> 
+                        <span className="text-gray-200">{(user as any).githubUsername || user.githubId || "GitHub Profile"}</span>
+                      </a>
+                    )}
+                  </div>
                 </div>
 
                 {imageError && (
@@ -274,6 +293,11 @@ export default function ProfilePage() {
                     <p>Image Error: {imageError ? 'Yes' : 'No'}</p>
                   </div>
                 )}
+                
+                {/* GitHub connection section - show only if user has Twitter but not GitHub */}
+                {hasTwitter && !hasGithub && (
+                  <LinkGitHubButton />
+                )}
 
                 <div className="mt-6">
                   <h3 className="text-lg font-semibold mb-3 border-b border-white/10 pb-2">Account Details</h3>
@@ -285,6 +309,42 @@ export default function ProfilePage() {
                       {!hasTwitter && !hasGithub && "Standard"}
                       {hasTwitter && "Twitter"}
                       {hasGithub && "GitHub"}
+                    </div>
+                    
+                    <div className="text-white/70">Accounts Connected</div>
+                    <div className="flex flex-col gap-2">
+                      {hasTwitter && (
+                        <a 
+                          href={twitterUsername ? `https://twitter.com/${twitterUsername}` : "https://twitter.com"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center bg-blue-900/30 hover:bg-blue-800/40 text-blue-300 rounded px-3 py-1.5 text-xs mr-1 transition"
+                        >
+                          <FaTwitter className="mr-2" /> 
+                          {twitterUsername ? `@${twitterUsername}` : "Twitter Profile"}
+                          <span className="ml-1 opacity-70">↗</span>
+                        </a>
+                      )}
+                      {hasGithub && (
+                        <a 
+                          href={(user as any).githubUsername ? `https://github.com/${(user as any).githubUsername}` : "https://github.com"}
+                          target="_blank"
+                          rel="noopener noreferrer" 
+                          className="inline-flex items-center bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 rounded px-3 py-1.5 text-xs transition"
+                        >
+                          <FaGithub className="mr-2" /> 
+                          {(user as any).githubUsername ? (user as any).githubUsername : (user.githubId ? "GitHub ID: " + user.githubId : "GitHub Profile")}
+                          <span className="ml-1 opacity-70">↗</span>
+                        </a>
+                      )}
+                    </div>
+                    
+                    <div className="text-white/70">Profile Image</div>
+                    <div className="flex flex-col gap-1">
+                      <div className="text-xs">
+                        {user.twitterId && "Twitter image available"}
+                        {user.githubId && hasGithub && ", GitHub image available"}
+                      </div>
                     </div>
                     
                     <div className="text-white/70">Credits</div>

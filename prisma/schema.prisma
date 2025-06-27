@@ -58,6 +58,7 @@ model User {
   emailAddress       String?  @unique
   imageUrl           String?
   githubId           String?  @unique
+  githubUsername     String?
   twitterId          String?  @unique
   accessToken        String?
   githubToken        String?

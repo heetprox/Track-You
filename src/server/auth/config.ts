@@ -62,11 +62,14 @@ export const authConfig = {
       return token;
     },
     signIn: async ({ user, account, profile }) => {
-      // NextAuth will automatically handle the core user creation
-      // We just need to keep our custom fields in sync
+      // Normal flow - update user data
       if (user.id) {
         try {
           if (account?.provider === 'github') {
+            // Extract GitHub profile data
+            const githubProfile = profile as any;
+            const githubUsername = githubProfile?.login || githubProfile?.name;
+            
             await db.user.update({
               where: { id: user.id },
               data: {
@@ -75,6 +78,7 @@ export const authConfig = {
                 imageUrl: user.image,
                 // GitHub specific data
                 githubId: profile?.id?.toString(),
+                githubUsername: githubUsername,
                 githubToken: account?.access_token,
                 githubRefreshToken: account?.refresh_token,
               },
