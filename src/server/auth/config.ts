@@ -68,6 +68,16 @@ export const authConfig = {
           if (account?.provider === 'github') {
             // Extract GitHub profile data
             const githubProfile = profile as any;
+            
+            // Debug GitHub profile data
+            console.log("GitHub profile data:", {
+              id: githubProfile?.id,
+              login: githubProfile?.login,
+              name: githubProfile?.name, 
+              avatar_url: githubProfile?.avatar_url
+            });
+            
+            // Get the GitHub username (login is the actual username)
             const githubUsername = githubProfile?.login || githubProfile?.name;
             
             await db.user.update({
@@ -75,7 +85,7 @@ export const authConfig = {
               data: {
                 // Copy standard fields to our custom fields if needed
                 emailAddress: user.email,
-                imageUrl: user.image,
+                imageUrl: githubProfile?.avatar_url || user.image, // Use GitHub avatar if available
                 // GitHub specific data
                 githubId: profile?.id?.toString(),
                 githubUsername: githubUsername,
@@ -92,17 +102,30 @@ export const authConfig = {
             const snowflakeId = twitterProfile.id_str;
             
             if (snowflakeId) {
-              // Get the filename from the profile image URL
-              let profileFilename = "";
+              // Debug the Twitter profile data
+              console.log("Twitter profile data:", {
+                id_str: twitterProfile.id_str,
+                profile_image_url_https: twitterProfile.profile_image_url_https
+              });
+              
+              // Extract image filename from url (but remove the _normal part)
+              let imageFilename = "profile_400x400.jpg"; // Default filename
+              
               if (twitterProfile.profile_image_url_https) {
-                const urlParts = twitterProfile.profile_image_url_https.split("/");
-                profileFilename = urlParts[urlParts.length - 1].replace('_normal', '_400x400');
-              } else {
-                profileFilename = "profile_400x400.jpg"; // Default filename
+                const urlParts = twitterProfile.profile_image_url_https.split('/');
+                const originalFilename = urlParts[urlParts.length - 1];
+                // Get base filename without _normal part
+                const baseFilename = originalFilename.replace('_normal', '');
+                // Extract just the filename without extension
+                const filenameWithoutExt = baseFilename.split('.')[0];
+                // Build 400x400 filename
+                imageFilename = `${filenameWithoutExt}_400x400.jpg`;
+                console.log("Original filename:", originalFilename);
+                console.log("Using filename:", imageFilename);
               }
               
-              // Create high-res image URL with 400x400
-              const imageUrl = `https://pbs.twimg.com/profile_images/${snowflakeId}/${profileFilename}`;
+              // Directly construct high-res URL using Twitter ID and 400x400 format
+              const imageUrl = `https://pbs.twimg.com/profile_images/${snowflakeId}/${imageFilename}`;
               
                               await db.user.update({
                 where: { id: user.id },

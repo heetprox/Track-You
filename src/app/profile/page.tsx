@@ -170,8 +170,8 @@ export default function ProfilePage() {
                     <Image
                       src={profileImage}
                       alt={user.name ?? "User"}
-                      width={112}
-                      height={112}
+                      width={500}
+                      height={500}
                       className="h-full w-full object-cover"
                       onError={() => setImageError(true)}
                     />
