@@ -41,11 +41,10 @@ export const authConfig = {
       clientId: process.env.AUTH_GITHUB_ID,
       clientSecret: process.env.AUTH_GITHUB_SECRET,
     }),
-    // Remove Twitter provider temporarily until we diagnose the issue
-    // TwitterProvider({
-    //   clientId: process.env.AUTH_TWITTER_ID,
-    //   clientSecret: process.env.AUTH_TWITTER_SECRET,
-    // }),
+    TwitterProvider({
+      clientId: process.env.TWITTER_CLIENT_ID,
+      clientSecret: process.env.TWITTER_CLIENT_SECRET,
+    }),
   ],
   adapter: PrismaAdapter(db),
   callbacks: {
@@ -63,39 +62,61 @@ export const authConfig = {
       return token;
     },
     signIn: async ({ user, account, profile }) => {
-      if (!user.email) return true;
-      
-      try {
-        // Update or create user with provider specific data
-        await db.user.upsert({
-          where: { id: user.id },
-          update: {
-            emailAddress: user.email,
-            name: user.name,
-            imageUrl: user.image,
-            ...(account?.provider === 'github' && {
-              githubId: profile?.id?.toString(),
-              githubToken: account?.access_token,
-              githubRefreshToken: account?.refresh_token,
-            }),
-          },
-          create: {
-            id: user.id,
-            emailAddress: user.email,
-            name: user.name,
-            imageUrl: user.image,
-            ...(account?.provider === 'github' && {
-              githubId: profile?.id?.toString(),
-              githubToken: account?.access_token,
-              githubRefreshToken: account?.refresh_token,
-            }),
-          },
-        });
-        return true;
-      } catch (error) {
-        console.error("Error saving user data:", error);
-        return true; // Still allow sign in even if saving extra data fails
+      // NextAuth will automatically handle the core user creation
+      // We just need to keep our custom fields in sync
+      if (user.id) {
+        try {
+          if (account?.provider === 'github') {
+            await db.user.update({
+              where: { id: user.id },
+              data: {
+                // Copy standard fields to our custom fields if needed
+                emailAddress: user.email,
+                imageUrl: user.image,
+                // GitHub specific data
+                githubId: profile?.id?.toString(),
+                githubToken: account?.access_token,
+                githubRefreshToken: account?.refresh_token,
+              },
+            });
+          }
+          
+          // Store Twitter/X snowflake ID
+          if (account?.provider === 'twitter' && profile) {
+            // Get the Twitter profile data
+            const twitterProfile = profile as any;
+            const snowflakeId = twitterProfile.id_str;
+            
+            if (snowflakeId) {
+              // Get the filename from the profile image URL
+              let profileFilename = "";
+              if (twitterProfile.profile_image_url_https) {
+                const urlParts = twitterProfile.profile_image_url_https.split("/");
+                profileFilename = urlParts[urlParts.length - 1].replace('_normal', '_400x400');
+              } else {
+                profileFilename = "profile_400x400.jpg"; // Default filename
+              }
+              
+              // Create high-res image URL with 400x400
+              const imageUrl = `https://pbs.twimg.com/profile_images/${snowflakeId}/${profileFilename}`;
+              
+                              await db.user.update({
+                where: { id: user.id },
+                data: {
+                  // Store the snowflake ID and high-res image URL
+                  imageUrl: imageUrl,
+                  // Type assertion to fix missing property error
+                  ...(snowflakeId && { twitterId: snowflakeId } as any)
+                },
+              });
+            }
+          }
+        } catch (error) {
+          console.error("Error updating user data:", error);
+          // Don't block signin on error
+        }
       }
+      return true;
     },
   },
   pages: {
