@@ -10,7 +10,8 @@ const config = {
         domains: [
           'pbs.twimg.com',
           'abs.twimg.com',
-          'twimg.com'
+          'twimg.com',
+          'github.com'
         ],
         // Or use the newer remotePatterns (recommended)
         remotePatterns: [
@@ -21,6 +22,10 @@ const config = {
           {
             protocol: 'https',
             hostname: 'abs.twimg.com',
+          },
+          {
+            protocol: 'https',
+            hostname: 'avatars.githubusercontent.com',
           },
         ],
       },
