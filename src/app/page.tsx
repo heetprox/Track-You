@@ -16,6 +16,15 @@ export default async function Home() {
           <div className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20">
             <h3 className="text-2xl font-bold">Authentication</h3>
             <AuthButtons session={session} />
+            
+            {session?.user && (
+              <Link 
+                href="/dashboard" 
+                className="px-6 py-2 rounded-md font-semibold text-center bg-purple-600 hover:bg-purple-700"
+              >
+                Go to Dashboard
+              </Link>
+            )}
           </div>
         </div>
       </div>

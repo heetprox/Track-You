@@ -1,6 +1,6 @@
 import { userRouter } from "@/server/api/routers/user";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
-// import { projectRouter } from "./routers/project";
+import { projectRouter } from "./routers/project";
 import { githubRouter } from "./routers/githubRouter";
 
 /**
@@ -10,7 +10,7 @@ import { githubRouter } from "./routers/githubRouter";
  */
 export const appRouter = createTRPCRouter({
   user: userRouter,
-  // project: projectRouter,
+  project: projectRouter,
   github: githubRouter,
 });
 

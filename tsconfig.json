@@ -23,7 +23,7 @@
     "jsx": "preserve",
     "plugins": [{ "name": "next" }],
     "incremental": true,
-
+    
     /* Path Aliases */
     "baseUrl": ".",
     "paths": {
@@ -36,7 +36,8 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/types/*.d.ts"
   ],
   "exclude": ["node_modules"]
 }

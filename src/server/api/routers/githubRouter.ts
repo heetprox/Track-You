@@ -1,25 +1,34 @@
 import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
+import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
 
 export const githubRouter = createTRPCRouter({
-  getUserRepos: publicProcedure
+  getUserRepos: protectedProcedure
     .input(
       z.object({
         username: z.string(),
       })
     )
-    .query(async ({ input }) => {
+    .query(async ({ ctx, input }) => {
       const { username } = input;
 
       try {
-        const GITHUB_TOKEN = process.env.GITHUB_TOKEN; // Securely stored in the backend
+        // Use user's github token if available
+        const userToken = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+          select: { githubToken: true }
+        });
+        
+        const GITHUB_TOKEN = userToken?.githubToken || process.env.GITHUB_TOKEN;
 
-        const headers: HeadersInit = {};
+        const headers: HeadersInit = {
+          'Accept': 'application/vnd.github.v3+json'
+        };
+        
         if (GITHUB_TOKEN) {
           headers.Authorization = `Bearer ${GITHUB_TOKEN}`;
         }
 
-        const response = await fetch(`https://api.github.com/users/${username}/repos`, { headers });
+        const response = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`, { headers });
 
         if (!response.ok) {
           const errorMessage = await response.text();
