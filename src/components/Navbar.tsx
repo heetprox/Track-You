@@ -35,7 +35,7 @@ export default function Navbar() {
             >
                 <motion.nav
                     variants={navVariants as unknown as Variants}
-                    className="bg-[#1a1a1a] rounded-md  z-50 w-[40%] flex items-center justify-between sm:hidden xm:hidden md:hidden lg:flex"
+                    className="bg-[#1a1a1a] rounded-lg  z-50 w-[40%] flex items-center justify-between sm:hidden xm:hidden md:hidden lg:flex"
                     style={{
                         padding: "clamp(0.5em, 0.25vw, 200rem)"
                     }}

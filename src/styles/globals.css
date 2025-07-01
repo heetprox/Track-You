@@ -7,7 +7,9 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-
+*{
+  border: 1px solid red;
+}
 
 .inter{
   font-family: "Inter", sans-serif;
