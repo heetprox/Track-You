@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "SuisseIntl-Regular";
+    src: url("/fonts/SuisseIntl-Regular.ttf") format("truetype");
+    font-style: normal;
+}
+
+.sus {
+    font-family: "SuisseIntl-Regular";
+}

@@ -11,6 +11,7 @@ import TextHover from "./animation/TextHover";
 import Button from "./Button";
 import RoundButton from "./RoundButton";
 import SimpleButton from "./SimpleButton";
+import Logo from "./Logo";
 
 export default function Navbar() {
     const [hidden, setHidden] = useState(false);
@@ -27,25 +28,29 @@ export default function Navbar() {
 
     return (
         <>
-            <div className="flex bg-white w-full h-fit justify-center">
+            <div className=" text-white sus overflow-hidden  flex w-full h-fit justify-center"
+            style={{
+                padding: "clamp(0.75em, 0.75vw, 200rem) 0 "
+            }}
+            >
                 <motion.nav
                     variants={navVariants as unknown as Variants}
-                    className="  z-50 w-[70%] flex items-center justify-between sm:hidden xm:hidden md:hidden lg:flex"
+                    className="bg-[#1a1a1a] rounded-md  z-50 w-[40%] flex items-center justify-between sm:hidden xm:hidden md:hidden lg:flex"
                     style={{
-                        padding: "clamp(0.75rem, 0.5vw, 200rem) 0"
+                        padding: "clamp(0.5em, 0.25vw, 200rem)"
                     }}
 
                     animate={hidden ? "hidden" : "vissible"}>
-                    <div className="w-[30%] space text-3xl font-medium">
+                    <div className="w-[15%]  sus text-sm ">
                         <Link href={"/"}>
-                           TrackYou
+                           <Logo />
                         </Link>
                     </div>
-                    <div className="flex gap-x-[20px] w-[70%]">
+                    <div className="flex gap-x-[20px] justify-center w-[60%]">
                         {navbarItems.map((item) => (
                             <Link
                                 key={item.id}
-                                className={`w-fit paragraph font-medium font-NeueMontreal text-secondry capitalize flex flex-col hover space`}
+                                className={`w-fit text-sm sus capitalize flex flex-col  hover`}
                                 href={item.href}>
                                 <TextHover
                                     titile1={item.title}
@@ -54,7 +59,7 @@ export default function Navbar() {
                             </Link>
                         ))}
                     </div>
-                    <div className="w-[30%] items-center flex ">
+                    <div className="w-[25%]   flex justify-end">
                         <SimpleButton title="Login" href="/auth/signin" />
                         <div className="w-2"></div>
                         <SimpleButton title="Get Started" href="/auth/signin" />

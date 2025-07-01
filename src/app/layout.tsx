@@ -6,6 +6,8 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
 import AuthProvider from "./_components/session-provider";
 import Navbar from "@/components/Navbar";
+import "@/styles/fonts.css";
+import TopStrip from "@/components/TopStrip";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -29,8 +31,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={` ${spaceGrotesk.variable}`}>
-      <body>
+      <body className="bg-[#EDE9E5]">
         <AuthProvider>
+        <TopStrip />
+
           <Navbar />
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </AuthProvider>

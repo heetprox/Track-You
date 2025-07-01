@@ -6,13 +6,23 @@ export const navbarItems = [
    },
    {
       id: 2,
-      title: "How to use",
+      title: "use?",
       href: "/guide",
    },
    {
       id: 3,
       title: "Leaderboard",
       href: "/leaderboard",
+   },
+   {
+      id: 4,
+      title: "About",
+      href: "/about",
+   },
+   {
+      id: 5,
+      title: "Resources",
+      href: "/resources",
    },
    
 ];
