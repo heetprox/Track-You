@@ -15,7 +15,7 @@ const Top = () => {
           alt="Robot"
           width={1000}
           height={1000}
-          className="object-contain hidden md:block w-[47vw] scale-150"
+          className="object-contain hidden md:block w-[100vh] scale-[1.5]"
         />
 
       </div>

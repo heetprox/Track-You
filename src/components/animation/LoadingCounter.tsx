@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import gsap from 'gsap';
 import './loader.css';
+import { useGSAP } from "@gsap/react";
+import CustomEase from "gsap/CustomEase";
 
 interface LoadingCounterProps {
   children: React.ReactNode;
@@ -14,15 +16,8 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
   // Register GSAP plugins
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Create custom ease if available
-      try {
-        // @ts-ignore
-        gsap.registerPlugin(CustomEase);
-        // @ts-ignore
-        CustomEase.create("hop", "0.9, 0, 0.1, 1");
-      } catch (e) {
-        console.log("CustomEase plugin not available, using default ease");
-      }
+      gsap.registerPlugin(CustomEase);
+      CustomEase.create("hop", "0.9, 0, 0.1, 1");
     }
     
     // Hide loader after animation completes
@@ -33,67 +28,66 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
     return () => clearTimeout(timer);
   }, []);
   
-  // GSAP animations
-  useEffect(() => {
-    if (typeof window !== 'undefined' && isLoading) {
-      const tl = gsap.timeline({
-        delay: 0.3,
-        defaults: {
-          ease: "power3.inOut",
+  // GSAP animations using useGSAP
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      delay: 0.3,
+      defaults: {
+        ease: "hop",
+      },
+    });
+
+    const counts = document.querySelectorAll(".count");
+
+    counts.forEach((count, index) => {
+      const digits = count.querySelectorAll(".digit h1");
+
+      tl.to(
+        digits,
+        {
+          y: "0%",
+          duration: 1,
+          stagger: 0.075,
         },
-      });
+        index * 1
+      );
 
-      const counts = document.querySelectorAll(".count");
-
-      counts.forEach((count, index) => {
-        const digits = count.querySelectorAll(".digit h1");
-
+      if (index < counts.length - 1) {
         tl.to(
           digits,
           {
-            y: "0%",
+            y: "-100%",
             duration: 1,
             stagger: 0.075,
           },
-          index * 1
+          index * 1 + 1
         );
+      }
+    });
 
-        if (index < counts.length - 1) {
-          tl.to(
-            digits,
-            {
-              y: "-100%",
-              duration: 1,
-              stagger: 0.075,
-            },
-            index * 1 + 1
-          );
-        }
-      });
-
-      tl.to(
-        ".block",
-        {
-          clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
-          duration: 1,
-          stagger: 0.1,
-          delay: 0.75,
-        },
-        "<"
-      );
-    }
-  }, [isLoading]);
+    tl.to(
+      ".block",
+      {
+        clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
+        duration: 1,
+        stagger: 0.1,
+        delay: 0.75,
+      },
+      "<"
+    );
+  });
 
   return (
     <>
-      <div className={`loader ${isLoading ? '' : 'hidden'}`}>
+      <div className={`loader ${isLoading ? 'z-[999]' : 'pointer-events-none opacity-0'} z-[999] transition-opacity duration-500`}>
         <div className="overlay">
           <div className="block"></div>
           <div className="block"></div>
         </div>
 
         <div className="counter">
-          <div className="count">
+          {/* 00% - Center of screen (default position) */}
+          <div className="count count-center">
             <div className="digit">
               <h1>0</h1>
             </div>
@@ -105,7 +99,8 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
             </div>
           </div>
           
-          <div className="count">
+          {/* 27% - Top left of screen */}
+          <div className="count count-top-left">
             <div className="digit">
               <h1>2</h1>
             </div>
@@ -117,7 +112,8 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
             </div>
           </div>
           
-          <div className="count">
+          {/* 65% - Right and center of screen */}
+          <div className="count count-right-center">
             <div className="digit">
               <h1>6</h1>
             </div>
@@ -129,7 +125,8 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
             </div>
           </div>
           
-          <div className="count">
+          {/* 98% - Bottom left of screen */}
+          <div className="count count-bottom-left">
             <div className="digit">
               <h1>9</h1>
             </div>
@@ -141,15 +138,13 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
             </div>
           </div>
           
-          <div className="count">
+          {/* 99% - Back to center of screen */}
+          <div className="count count-center-final">
             <div className="digit">
-              <h1>1</h1>
+              <h1>9</h1>
             </div>
             <div className="digit">
-              <h1>0</h1>
-            </div>
-            <div className="digit">
-              <h1>0</h1>
+              <h1>9</h1>
             </div>
             <div className="digit">
               <h1>%</h1>
