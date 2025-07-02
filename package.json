@@ -23,6 +23,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.2",
     "@google/generative-ai": "^0.24.1",
+    "@gsap/react": "^2.1.2",
     "@langchain/community": "^0.3.47",
     "@prisma/client": "^6.5.0",
     "@t3-oss/env-nextjs": "^0.12.0",

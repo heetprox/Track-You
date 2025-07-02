@@ -28,7 +28,7 @@ export default function Navbar() {
 
     return (
         <>
-            <div className=" text-white sus overflow-hidden flex w-full h-fit justify-center"
+            <div className="absolute top-0 left-0 text-white sus overflow-hidden flex w-full h-fit justify-center"
             style={{
                 paddingTop: "clamp(0.75em, 2.5vw, 200rem)",
                 paddingLeft: 0,
