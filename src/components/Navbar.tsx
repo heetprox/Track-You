@@ -28,9 +28,11 @@ export default function Navbar() {
 
     return (
         <>
-            <div className=" text-white sus overflow-hidden  flex w-full h-fit justify-center"
+            <div className=" text-white sus overflow-hidden flex w-full h-fit justify-center"
             style={{
-                padding: "clamp(0.75em, 0.75vw, 200rem) 0 "
+                paddingTop: "clamp(0.75em, 2.5vw, 200rem)",
+                paddingLeft: 0,
+                paddingRight: 0
             }}
             >
                 <motion.nav

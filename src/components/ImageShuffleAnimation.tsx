@@ -107,7 +107,7 @@ export default function ImageShuffleAnimation() {
 
   return (
     <div className="flex justify-center items-center w-full h-full">
-    <div className="relative w-[80%] h-[60vh] overflow-hidden bg-transparent" ref={containerRef}>
+    <div className="relative w-[80%] h-[55vh] overflow-hidden bg-transparent" ref={containerRef}>
       {shuffledLogos.current.map((logo, i) => (
         <div
           key={logo.id}
@@ -124,7 +124,7 @@ export default function ImageShuffleAnimation() {
               src={logo.path}
               fill={true}
               alt=""
-              className="h-full w-auto min-w-full max-w-none object-cover"
+              className="h-full w-auto min-w-full max-w-none object-cover    rounded-3xl"
             />
           </div>
         </div>
