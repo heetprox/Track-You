@@ -11,11 +11,11 @@ const Top = () => {
     >
       <div className="absolute z-10 bottom-0 left-1/2 transform -translate-x-1/2">
         <Image
-          src="/robo/robo.svg"
+          src="/robo/4.png"
           alt="Robot"
-          width={100}
-          height={100}
-          className="object-contain hidden md:block w-[40vw]"
+          width={1000}
+          height={1000}
+          className="object-contain hidden md:block w-[47vw] scale-150"
         />
 
       </div>

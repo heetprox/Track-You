@@ -37,6 +37,7 @@ export default function RootLayout({
 
           <Navbar />
           <TRPCReactProvider>{children}</TRPCReactProvider>
+        
         </AuthProvider>
       </body>
     </html>
