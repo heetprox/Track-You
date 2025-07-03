@@ -4,6 +4,25 @@
     font-style: normal;
 }
 
+
+@font-face {
+    font-family: 'uto';
+    src: url('/fonts/uto.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Harmonia-Sans-W01-Semibold';
+    src: url('/fonts/Harmonia-Sans-W01-Semibold.ttf') format('truetype');
+}
+
+.uto {
+    font-family: 'uto', sans-serif;
+}
+
+.harmo {
+    font-family: 'Harmonia-Sans-W01-Semibold', sans-serif;
+}
+
+
 .sus {
     font-family: "SuisseIntl-Regular", sans-serif;
 }

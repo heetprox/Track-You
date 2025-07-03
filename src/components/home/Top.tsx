@@ -20,7 +20,7 @@ const Top = () => {
 
       </div>
       <div className="sus uppercase relative z-0">
-        <TextSplit delay={0.3}>
+        <TextSplit delay={6.4}>
           TrackYou
         </TextSplit>
       </div>

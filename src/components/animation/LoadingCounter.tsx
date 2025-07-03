@@ -22,7 +22,20 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
     
     // Hide loader after animation completes
     const timer = setTimeout(() => {
-      setIsLoading(false);
+      if (typeof window !== 'undefined') {
+        // Slide up animation when loading completes
+        const tl = gsap.timeline({
+          onComplete: () => setIsLoading(false)
+        });
+        
+        tl.to(".loader", {
+          yPercent: -100,
+          duration: 1.2,
+          ease: "power3.inOut",
+        });
+      } else {
+        setIsLoading(false);
+      }
     }, 6000); // Adjust timing to match animation duration
     
     return () => clearTimeout(timer);
@@ -79,7 +92,7 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
 
   return (
     <>
-      <div className={`loader ${isLoading ? 'z-[999]' : 'pointer-events-none opacity-0'} z-[999] transition-opacity duration-500`}>
+      <div className={`loader ${!isLoading && 'loader-hidden'}`}>
         <div className="overlay">
           <div className="block"></div>
           <div className="block"></div>
@@ -95,12 +108,12 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
               <h1>0</h1>
             </div>
             <div className="digit">
-              <h1>%</h1>
+              {/* <h1>%</h1> */}
             </div>
           </div>
           
           {/* 27% - Top left of screen */}
-          <div className="count count-top-left">
+          <div className="count">
             <div className="digit">
               <h1>2</h1>
             </div>
@@ -108,7 +121,7 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
               <h1>7</h1>
             </div>
             <div className="digit">
-              <h1>%</h1>
+              {/* <h1>%</h1> */}
             </div>
           </div>
           
@@ -121,7 +134,7 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
               <h1>5</h1>
             </div>
             <div className="digit">
-              <h1>%</h1>
+              {/* <h1>%</h1> */}
             </div>
           </div>
           
@@ -134,7 +147,7 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
               <h1>8</h1>
             </div>
             <div className="digit">
-              <h1>%</h1>
+              {/* <h1>%</h1> */}
             </div>
           </div>
           
@@ -147,14 +160,14 @@ export default function LoadingCounter({ children }: LoadingCounterProps) {
               <h1>9</h1>
             </div>
             <div className="digit">
-              <h1>%</h1>
+              {/* <h1>%</h1> */}
             </div>
           </div>
         </div>
       </div>
       
       {/* Content */}
-      <div className={isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-1000"}>
+      <div>
         {children}
       </div>
     </>

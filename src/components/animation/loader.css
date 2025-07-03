@@ -5,15 +5,15 @@
   width: 100vw;
   height: 100svh;
   overflow: hidden;
-  z-index: 999  ;
+  z-index: 999;
   background-color: black;
-  transition: opacity 0.5s ease-in-out;
+  will-change: transform;
+  transform: translateY(0);
+  transition: transform 0s; /* No transition initially, GSAP will handle it */
 }
 
-.loader.hidden {
-  z-index: -10;
-  pointer-events: none;
-  opacity: 0;
+.loader-hidden {
+  z-index: -1;
 }
 
 .overlay {
@@ -37,6 +37,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
+  color: white;
 }
 
 .count {
@@ -49,7 +50,7 @@
 
 .digit {
   flex: 1;
-  color: #fff;
+  color: white;
   padding-top: 1rem;
 }
 
@@ -105,8 +106,6 @@
     transform: rotate(360deg);
   }
 }
-
-/* Add these styles to the end of the file */
 
 /* Default count positioning (center of screen) */
 .count-center {
