@@ -1,4 +1,6 @@
 import React from 'react'
+import SvgGoldFilter from '../ui/SvgGoldFilter'
+import Tool from '../ui/Tool'
 
 const Features = () => {
   return (
@@ -45,6 +47,11 @@ const Features = () => {
 
 
 
+
+        </div>
+
+        <div className="flex">
+            <Tool image="/icons/fire.png" title="Fire" description="Fire is a tool that can be used to create a fire." />
 
         </div>
       </div>
