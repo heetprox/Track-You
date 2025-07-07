@@ -28,7 +28,7 @@ const Features = () => {
           >Sync with GitHub & X{"."}
             <br />
             Both ways{"."}</div>
-          <div className="flex sus leading-normal text-white"
+          <div className="flex sus leading-normal text-white/80"
             style={{
               fontSize: "clamp(1rem, 1vw, 200rem)"
             }}
@@ -39,7 +39,7 @@ const Features = () => {
           </div>
         </div>
 
-        <div className="flex aspect-video w-full">
+        <div className="flex aspect-video w-full bg-white/5">
 
 
 
@@ -50,13 +50,13 @@ const Features = () => {
         </div>
 
         <div className="grid grid-cols-3 gap-8">
-            <Tool image="/icons/fireew.png" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
-            <Tool image="/icons/progress.svg" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
-            <Tool image="/icons/time.png" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
+            <Tool image="/icons/fireew.png" title="Coding" description="Build and maintain coding streaks similar to GitHub's contribution graph." title2=' Streaks' />
+            <Tool image="/icons/progress.svg" title="in Detail " description="Get insights into your coding patterns, most productive hours, and language proficiency." title2='Analytics' />
+            <Tool image="/icons/time.png" title="Time" description="Automatically track your coding time across different projects and languages." title2='Tracking' />
 
-            <Tool image="/icons/code.png" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
-            <Tool image="/icons/trophy.png" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
-            <Tool image="/icons/daily.svg" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
+            <Tool image="/icons/code.png" title="Language " description="Support for over 50 programming languages and frameworks." title2='Support' />
+            <Tool image="/icons/trophy.png" title="Weekly" description="Compete with friends on daily, weekly, and monthly leaderboards." title2='Leaderboards' />
+            <Tool image="/icons/daily.svg" title="Daily" description="Track your daily activity and set goals to improve consistently." title2='Progress  ' />
 
         </div>
       </div>
