@@ -1,5 +1,4 @@
 import React from 'react'
-import SvgGoldFilter from '../ui/SvgGoldFilter'
 import Tool from '../ui/Tool'
 
 const Features = () => {
@@ -50,8 +49,14 @@ const Features = () => {
 
         </div>
 
-        <div className="flex">
-            <Tool image="/icons/fire.png" title="Fire" description="Fire is a tool that can be used to create a fire." />
+        <div className="grid grid-cols-3 gap-8">
+            <Tool image="/icons/fireew.png" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
+            <Tool image="/icons/progress.svg" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
+            <Tool image="/icons/time.png" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
+
+            <Tool image="/icons/code.png" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
+            <Tool image="/icons/trophy.png" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
+            <Tool image="/icons/daily.svg" title="Two-way synchronization" description="Integrate your task tracker with GitHub to sync changes instantly." />
 
         </div>
       </div>

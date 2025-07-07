@@ -29,8 +29,8 @@ const Working = () => {
                         }}
                     >
                                 <TextSplit animateOnScroll={true} delay={0.1}>Ready{"."}</TextSplit>
-                                <TextSplit animateOnScroll={true} delay={0.3}>To Start{"."}</TextSplit>
-                                <TextSplit animateOnScroll={true} delay={0.5}>The Journey{"."}</TextSplit>
+                                <TextSplit animateOnScroll={true} delay={0.2}>To Start{"."}</TextSplit>
+                                <TextSplit animateOnScroll={true} delay={0.3}>The Journey{"."}</TextSplit>
                     </div>
 
                 </div>
