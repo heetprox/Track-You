@@ -65,6 +65,9 @@ export default function TextSplit({
         trigger: containerRef.current,
         start: "top 85%",
         once: true
+      splitText.revert();
+      lineSplits.revert();
+    };
   }, { scope: containerRef, dependencies: [isReady, delay, animateOnScroll] });
 
   return (
