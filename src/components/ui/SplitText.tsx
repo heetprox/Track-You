@@ -11,7 +11,7 @@ interface TextSplitProps {
   children: ReactNode;
   animateOnScroll?: boolean;
   delay?: number;
-}
+}   
 
 export default function TextSplit({ 
   children, 
