@@ -5,6 +5,10 @@ import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
+interface TextSplitProps {
+  children: ReactNode;
+  animateOnScroll?: boolean;
+  delay?: number;
 }
 
 export default function TextSplit({ 
