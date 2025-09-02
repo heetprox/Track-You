@@ -37,6 +37,11 @@ export default function TextSplit({
     
     // Create the split text animation
     const splitText = new SplitText(containerRef.current, {
+      type: "lines",
+      linesClass: "overflow-hidden"
+    });
+    
+    // Create another split for the line elements
     const lineSplits = new SplitText(splitText.lines, {
       type: "lines",
       linesClass: "split-child"
