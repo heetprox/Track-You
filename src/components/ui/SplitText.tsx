@@ -5,6 +5,8 @@ import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
+gsap.registerPlugin(SplitText, ScrollTrigger);
+
 interface TextSplitProps {
   children: ReactNode;
   animateOnScroll?: boolean;
