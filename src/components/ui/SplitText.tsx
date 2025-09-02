@@ -5,6 +5,9 @@ import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
+}
+
+export default function TextSplit({ 
   children, 
   animateOnScroll = true, 
   delay = 0 
