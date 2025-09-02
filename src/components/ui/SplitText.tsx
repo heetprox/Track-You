@@ -37,6 +37,11 @@ export default function TextSplit({
     
     // Create the split text animation
     const splitText = new SplitText(containerRef.current, {
+    const lineSplits = new SplitText(splitText.lines, {
+      type: "lines",
+      linesClass: "split-child"
+    });
+    
     // Set initial state
     gsap.set(lineSplits.lines, { 
       y: "100%", 
